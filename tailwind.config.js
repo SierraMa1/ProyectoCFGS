@@ -5,7 +5,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      'switzer': ['Switzer', 'sans-serif']
+      'switzer': ['Switzer', 'sans-serif'],
+      'chillax': ['Chillax', 'sans-serif'],
     }
   },
   plugins: [],
