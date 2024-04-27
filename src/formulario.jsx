@@ -1,45 +1,68 @@
 import React, { useState } from 'react';
 
-const Formulario = () => {
+const Formulario = ({onClose}) => {
   const [nombre, setNombre] = useState('');
-  const [apellidos, setapellidos] = useState('');
+  const [apellidos, setApellidos] = useState('');
   const [contraseña, setContraseña] = useState('');
-  const [telefono, settelefono] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
-  const [ubicacion, setubicacion] = useState('');
+  const [ubicacion, setUbicacion] = useState('');
   const [mensaje, setMensaje] = useState('');
-  const [nombreempresa, setnombreempresa] = useState('');
+  const [nombreEmpresa, setNombreEmpresa] = useState('');
   const [servicios, setServicios] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const urlencoded = new URLSearchParams();
-    urlencoded.append("nombre", nombre)
-    urlencoded.append("apellidos", apellidos)
-    urlencoded.append("contraseña", contraseña)
-    urlencoded.append("telefono", telefono)
-    urlencoded.append("email", email)
-    urlencoded.append("ubicacion", ubicacion)
-    urlencoded.append("nombreempresa", nombreempresa)
-    urlencoded.append("servicios", servicios)
-    addPost(urlencoded);
-  }
+    urlencoded.append("nombre", nombre);
+    urlencoded.append("apellidos", apellidos);
+    urlencoded.append("contraseña", contraseña);
+    urlencoded.append("telefono", telefono);
+    urlencoded.append("email", email);
+    urlencoded.append("ubicacion", ubicacion);
+    urlencoded.append("nombreempresa", nombreEmpresa);
+    urlencoded.append("servicios", servicios);
 
-  const addPost = async (dataPost) => {
-    console.log(JSON.stringify({dataPost}));
-    let response = await fetch('http://localhost:3400/api/electricistas', {
-         method: 'POST',
-         body: dataPost,
-         headers: {
-            'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-         },
+    try {
+      const response = await fetch('http://localhost:3400/api/electricistas', {
+        method: 'POST',
+        body: urlencoded,
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
       });
-      let data = await response.json();
+
+      if (!response.ok) {
+        throw new Error('Error al guardar el usuario');
+      }
+
+      setMensaje('Usuario guardado correctamente');
+      setError('');
+      setTimeout(() => {
+        setNombre('');
+        setApellidos('');
+        setContraseña('');
+        setTelefono('');
+        setEmail('');
+        setUbicacion('');
+        setNombreEmpresa('');
+        setServicios('');
+        setMensaje('');
+        onClose();
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+      setMensaje('');
+      setError('Error al guardar el usuario');
+    }
   }
 
   return (
     <div className="max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-4 font-switzer">Rellena el siguiente formulario:</h2>
+      {mensaje && <p className="text-green-600 mb-4">{mensaje}</p>}
+      {error && <p className="text-red-600 mb-4">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="nombre" className="block text-gray-900 font-bold mb-2 font-switzer">Nombre</label>
@@ -59,7 +82,7 @@ const Formulario = () => {
             id="apellido"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
             value={apellidos}
-            onChange={(e) => setapellidos(e.target.value)}
+            onChange={(e) => setApellidos(e.target.value)}
             required
           />
         </div>
@@ -81,7 +104,7 @@ const Formulario = () => {
             id="telefono"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
             value={telefono}
-            onChange={(e) => settelefono(e.target.value)}
+            onChange={(e) => setTelefono(e.target.value)}
             required
           />
         </div>
@@ -103,7 +126,7 @@ const Formulario = () => {
             id="ubicacion"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
             value={ubicacion}
-            onChange={(e) => setubicacion(e.target.value)}
+            onChange={(e) => setUbicacion(e.target.value)}
             required
           />
         </div>
@@ -113,8 +136,8 @@ const Formulario = () => {
             type="text"
             id="nombreempresa"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-            value={nombreempresa}
-            onChange={(e) => setnombreempresa(e.target.value)}
+            value={nombreEmpresa}
+            onChange={(e) => setNombreEmpresa(e.target.value)}
             required
           />
         </div>
@@ -140,6 +163,7 @@ const Formulario = () => {
       </form>
     </div>
   );
-};
+
+}
 
 export default Formulario;
