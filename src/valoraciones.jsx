@@ -6,6 +6,13 @@ import StarRating from "./starRating";
 const Valoraciones = () => {
     const [ electricista, setElectricista ] = useState([])
     const [ valoraciones, setValoraciones ] = useState([])
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredValoraciones = valoraciones.filter((valoracion) =>
+        valoracion.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        valoracion.ubicacion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        valoracion.usuario.toLowerCase().includes(searchTerm.toLowerCase()) 
+    );
 
     useEffect(() => {
         fetch(`http://localhost:3400/api/valoraciones`)
@@ -20,11 +27,11 @@ const Valoraciones = () => {
     if (!valoraciones) return null;
     return (
         <>
-        <Header />
+        <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         <div className="container mx-auto mt-8">
         <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold mb-4">Valoraciones de Usuarios</h1>
-            {valoraciones.map((valoracion, index) => (
+            {filteredValoraciones.map((valoracion, index) => (
             <div key={index} className="bg-white rounded-lg shadow-lg p-6 mb-4">
                 {/* Datos del electricista */}
                 <div className="mb-4">

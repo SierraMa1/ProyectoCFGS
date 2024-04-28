@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 
-const Formulario = ({onClose}) => {
+const Formulario = ({ onClose, screen }) => {
   const [nombre, setNombre] = useState('');
   const [apellidos, setApellidos] = useState('');
-  const [contraseña, setContraseña] = useState('');
+  const [password, setPassword] = useState('');
   const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
   const [ubicacion, setUbicacion] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [nombreEmpresa, setNombreEmpresa] = useState('');
   const [servicios, setServicios] = useState('');
+  const [tipoUsuario, setTipoUsuario] = useState(screen === 'Home' ? 'electricista' : 'cliente');
   const [error, setError] = useState('');
 
   const handleSubmit = async (event) => {
@@ -17,15 +18,20 @@ const Formulario = ({onClose}) => {
     const urlencoded = new URLSearchParams();
     urlencoded.append("nombre", nombre);
     urlencoded.append("apellidos", apellidos);
-    urlencoded.append("contraseña", contraseña);
+    urlencoded.append("password", password);
     urlencoded.append("telefono", telefono);
     urlencoded.append("email", email);
     urlencoded.append("ubicacion", ubicacion);
-    urlencoded.append("nombreempresa", nombreEmpresa);
+    urlencoded.append("nombreEmpresa", nombreEmpresa);
     urlencoded.append("servicios", servicios);
+    urlencoded.append("tipoUsuario", tipoUsuario);
+
+    const urlApi = tipoUsuario === 'electricista' 
+                ? 'http://localhost:3400/api/electricistas'
+                : 'http://localhost:3400/api/usuarios'
 
     try {
-      const response = await fetch('http://localhost:3400/api/electricistas', {
+      const response = await fetch(urlApi, {
         method: 'POST',
         body: urlencoded,
         headers: {
@@ -42,7 +48,7 @@ const Formulario = ({onClose}) => {
       setTimeout(() => {
         setNombre('');
         setApellidos('');
-        setContraseña('');
+        setPassword('');
         setTelefono('');
         setEmail('');
         setUbicacion('');
@@ -60,10 +66,20 @@ const Formulario = ({onClose}) => {
 
   return (
     <div className="max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4 font-switzer">Rellena el siguiente formulario:</h2>
-      {mensaje && <p className="text-green-600 mb-4">{mensaje}</p>}
-      {error && <p className="text-red-600 mb-4">{error}</p>}
+      <h2 className="text-xl font-bold mb-4 font-switzer">Regístrate</h2>
       <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label htmlFor="tipoUsuario" className="block text-gray-900 font-bold mb-2 font-switzer">Tipo de usuario</label>
+          <select
+            id="tipoUsuario"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+            value={tipoUsuario}
+            onChange={(e) => setTipoUsuario(e.target.value)}
+          >
+            <option value="electricista">Electricista</option>
+            <option value="cliente">Cliente</option>
+          </select>
+        </div>
         <div className="mb-4">
           <label htmlFor="nombre" className="block text-gray-900 font-bold mb-2 font-switzer">Nombre</label>
           <input
@@ -76,10 +92,10 @@ const Formulario = ({onClose}) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="apellido" className="block text-gray-900 font-bold mb-2 font-switzer">Apellidos</label>
+          <label htmlFor="apellidos" className="block text-gray-900 font-bold mb-2 font-switzer">Apellidos</label>
           <input
             type="text"
-            id="apellido"
+            id="apellidos"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
             value={apellidos}
             onChange={(e) => setApellidos(e.target.value)}
@@ -87,24 +103,13 @@ const Formulario = ({onClose}) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="contraseña" className="block text-gray-900 font-bold mb-2 font-switzer">contraseña</label>
+          <label htmlFor="password" className="block text-gray-900 font-bold mb-2 font-switzer">Password</label>
           <input
             type="password"
-            id="contraseña"
+            id="password"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-            value={contraseña}
-            onChange={(e) => setContraseña(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="telefono" className="block text-gray-900 font-bold mb-2 font-switzer">Teléfono</label>
-          <input
-            type="text"
-            id="telefono"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-            value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
@@ -130,34 +135,49 @@ const Formulario = ({onClose}) => {
             required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="nombreempresa" className="block text-gray-900 font-bold mb-2 font-switzer">Nombre de la empresa</label>
-          <input
-            type="text"
-            id="nombreempresa"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-            value={nombreEmpresa}
-            onChange={(e) => setNombreEmpresa(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="servicios" className="block text-gray-900 font-bold mb-2 font-switzer">Servicios</label>
-          <textarea
-            id="servicios"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
-            rows="10"
-            value={servicios}
-            onChange={(e) => setServicios(e.target.value)}
-            required
-          ></textarea>
-        </div>
+        {tipoUsuario === 'electricista' && (
+          <>
+            <div className="mb-4">
+              <label htmlFor="nombreempresa" className="block text-gray-900 font-bold mb-2 font-switzer">Nombre de la empresa</label>
+              <input
+                type="text"
+                id="nombreempresa"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+                value={nombreEmpresa}
+                onChange={(e) => setNombreEmpresa(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="telefono" className="block text-gray-900 font-bold mb-2 font-switzer">Teléfono</label>
+              <input
+                type="text"
+                id="telefono"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="servicios" className="block text-gray-900 font-bold mb-2 font-switzer">Servicios</label>
+              <textarea
+                id="servicios"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+                rows="5"
+                value={servicios}
+                onChange={(e) => setServicios(e.target.value)}
+                required
+              ></textarea>
+            </div>
+          </>
+        )}
         <div className="flex items-center justify-end">
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Enviar
+            Registrarse
           </button>
         </div>
       </form>

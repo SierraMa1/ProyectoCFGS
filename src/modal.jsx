@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Formulario from './formulario';
 
-const Modal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, screen }) => {
 
   if (!isOpen) return null;
 
@@ -10,9 +10,8 @@ const Modal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
       <div className="relative w-full h-full max-w-2xl mx-auto my-6">
         <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
-          {/* Encabezado */}
           <div className="flex items-start justify-between p-8 border-b border-solid border-gray-400 rounded-t">
-            <h1 className="text-xl font-switzer font-bold text-grey-neutral">¿Quieres ofrecer tus servicios?</h1>
+            <h1 className="text-xl font-switzer font-bold text-grey-neutral">{screen === 'Home' ? '¿Quieres ofrecer tus servicios?' : '¿Quieres valorar tu experiencia?'}</h1>
             <button
               className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
               onClick={onClose}
@@ -22,7 +21,7 @@ const Modal = ({ isOpen, onClose }) => {
           </div>
 
           <div className="flex-auto overflow-y-auto p-10">
-            <Formulario onClose={onClose}/>
+            <Formulario onClose={onClose} screen={screen}/>
           </div>
 
           <div className="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">

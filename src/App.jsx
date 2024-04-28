@@ -6,6 +6,7 @@ const App = () => {
 
   const [electricistas, setElectricistas] = useState([])
   const [searchTerm, setSearchTerm] = useState('');
+  const screen = "Home";
 
   const filteredElectricistas = electricistas.filter((electricista) =>
     electricista.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -25,12 +26,12 @@ const App = () => {
   console.log(electricistas);
   return (
     <>
-      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} screen={screen} />
       <div className="container mx-auto mt-8">
         <div className="flex flex-wrap">
           {filteredElectricistas.map((electricista) => (
             <div key={electricista.id} className="w-full sm:w-1/2 lg:w-1/3 p-4">
-              <a href={`/perfil/${electricista.id}`}>
+              <a href={`/electricista/${electricista.id}`}>
                 <Profile electricista={electricista} />
               </a>
             </div>

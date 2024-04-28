@@ -6,7 +6,7 @@ import ModalInicioSesion from './modalInicioSesion';
 
 
 
-const Header = ({searchTerm, setSearchTerm}) => {
+const Header = ({searchTerm, setSearchTerm, screen}) => {
 
   const [electricistas, setElectricistas] = useState([]);
 
@@ -65,16 +65,17 @@ const Header = ({searchTerm, setSearchTerm}) => {
         </button>
       </div>
 
-      {/* Botones de acción y enlaces */}
       <div className="hidden md:flex items-center space-x-4">
 
-        {/* Botón de ofrecer servicios */}
-        <button onClick={openModal} className="bg-blue-500 shadow-lg shadow-blue-500/50 border border-blue-900 rounded-lg text-white font-bold py-2 px-4">Ofrecer servicios</button>
+        <button onClick={openModal} className="bg-blue-500 shadow-lg shadow-blue-500/50 border border-blue-900 rounded-lg text-white font-bold py-2 px-4">{screen === 'Home' ? 'Ofrecer servicios' : 'Valorar experiencia'}</button>
 
-        {/* Enlace a la página de valoraciones */}
-        <Link to="/valoraciones" className="text-gray-900 font-semibold text-lg hover:underline">Valoraciones</Link>
+        {screen === 'Home' && (
+          <Link to="/valoraciones" className="text-gray-900 font-semibold text-lg hover:underline">Valoraciones</Link>
+        )}
+        {screen !== 'Home' && (
+          <Link to="/" className="text-gray-900 font-semibold text-lg hover:underline">Electricistas</Link>
+        )}
 
-        {/* Botón de inicio de sesión */}
         <button onClick={openInicio} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg">Iniciar sesión</button>
       </div>
 
@@ -82,12 +83,12 @@ const Header = ({searchTerm, setSearchTerm}) => {
       {menuOpen && (
         <div className="md:hidden absolute top-16 right-0 bg-white w-48 mt-2 shadow-lg rounded-lg">
           <Link to="/valoraciones" className="block px-4 py-2 text-gray-900 hover:bg-gray-100">Valoraciones</Link>
-          <button onClick={openModal} className="block px-4 py-2 text-gray-900 hover:bg-gray-100">Ofrecer servicios</button>
+          <button onClick={openModal} className="block px-4 py-2 text-gray-900 hover:bg-gray-100">{screen === 'Home' ? 'Ofrecer servicios' : 'Valorar experiencia'}</button>
           <button onClick={openInicio} className="block px-4 py-2 text-gray-900 hover:bg-gray-100">Iniciar sesión</button>
         </div>
       )}
     </div>
-    <Modal isOpen={isOpen} onClose={closeModal}/>
+    <Modal isOpen={isOpen} onClose={closeModal} screen={screen}/>
     <ModalInicioSesion isOpen={isOpenInicio} onClose={closeInicio}/>
     </>
   );
