@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import App from './App';
-import Header from './header';
-import Electricista from './electricista';
-import Profile from './profile';
-import Valoraciones from './valoraciones';
-import Perfil from './perfil';
+import App from './routes/App';
+import Header from './components/header';
+import Electricista from './routes/electricista';
+import Profile from './components/profile';
+import Valoraciones from './routes/valoraciones';
+import Perfil from './routes/perfil';
 
 const Root = () => {
   return (

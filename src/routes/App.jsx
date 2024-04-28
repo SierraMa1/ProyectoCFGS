@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Profile from "./profile";
-import Header from "./header";
+import Profile from "../components/profile";
+import Header from "../components/header";
 
 const App = () => {
 

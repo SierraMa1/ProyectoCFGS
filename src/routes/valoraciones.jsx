@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import React from 'react';
-import Header from "./header";
-import StarRating from "./starRating";
+import Header from "../components/header";
+import StarRating from "../components/starRating";
 
 const Valoraciones = () => {
     const [ electricista, setElectricista ] = useState([])

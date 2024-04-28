@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ElectricFinderlogo from './ElectricFinderlogo.png';
+import ElectricFinderlogo from './../ElectricFinderlogo.png';
 import Modal from './modal';
 import { Link } from 'react-router-dom';
 import ModalInicioSesion from './modalInicioSesion';

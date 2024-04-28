@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import Header from './header';
+import Header from '../components/header';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -105,7 +105,13 @@ const Perfil = ({ tipo }) => {
             console.log(error);
             alert('No se pudo borrar usuario');
         }
-    }
+    };
+
+    const cerrarSesion = () => {
+        localStorage.removeItem('name');
+        localStorage = localStorage.removeItem('id');
+        checkUser();
+    };
 
 if (!userData) return null;
 
@@ -254,6 +260,12 @@ return (
                         >
                             Cancelar</span>
                     </a>
+                    <button
+                        onClick={cerrarSesion}
+                        className="bg-grey-500 hover:bg-grey-700 font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline"
+                    >
+                        Cerrar Sesión
+                    </button>
                 </form>
             ) : (
                 <>
@@ -280,6 +292,12 @@ return (
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline"
                     >
                         Editar
+                    </button>
+                    <button
+                        onClick={cerrarSesion}
+                        className="bg-grey-500 hover:bg-grey-700 font-bold py-2 px-4 rounded mt-4 focus:outline-none focus:shadow-outline"
+                    >
+                        Cerrar Sesión
                     </button>
                     <button
                         onClick={eliminar}
